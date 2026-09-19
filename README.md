@@ -1,2 +1,2 @@
 # clearpath-system-website
-ClearPath information website and front-end prototype for the dev|bravo project.
+ClearPath information website and prototype for the dev|bravo project.
