@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearPath | Sign In</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h2>ClearPath</h2>
+
+      <nav>
+        <a href="../index.html">Home</a>
+        <a href="../index.html#features">Features</a>
+        <a href="../index.html#feedback">Feedback</a>
+        <a href="signin.html">Sign In</a>
+      </nav>
+    </header>
+
+    <main class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h1 class="fw-bold">Sign In</h1>
+
+          <p>Sign in to manage ClearPath information and feedback.</p>
+
+          <form id="signin-form" class="card card-body p-4">
+            <label for="email" class="form-label"> Email </label>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control mb-3"
+            />
+
+            <label for="password" class="form-label"> Password </label>
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control mb-3"
+            />
+
+            <button type="submit" class="btn btn-success">Sign In</button>
+
+            <p id="signin-status" class="mt-3"></p>
+          </form>
+
+          <p class="mt-3">
+            This sign-in page is a demonstration for the class project.
+          </p>
+
+          <div id="user-panel" class="card card-body mt-4">
+            <h2 class="h5">Sample account</h2>
+            <p class="mb-1">Username: clearpath-admin</p>
+            <p class="mb-0">Role: Administrator</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer text-center py-4">
+      <p class="mb-0">Making way for what matters most. Together.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>
