@@ -1,1 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearPath | Home</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="border-bottom">
+      <nav class="container d-flex flex-wrap align-items-center gap-3 py-3">
+        <a href="index.html" class="navbar-brand fw-bold me-auto">
+          ClearPath
+        </a>
 
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#feedback" class="nav-link">Feedback</a>
+
+        <a href="pages/signin.html" class="btn btn-outline-success">
+          Sign In
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-section container py-5">
+        <div class="row align-items-center g-4">
+          <div class="col-md-6">
+            <h1 class="display-5 fw-bold">
+              A clearer path for emergency response.
+            </h1>
+
+            <p class="lead">
+              Explore how ClearPath could connect drivers, emergency vehicles,
+              and intersections.
+            </p>
+
+            <a href="#features" class="btn btn-success">
+              Explore the concept
+            </a>
+
+            <a href="#feedback" class="btn btn-outline-success">
+              Share feedback
+            </a>
+          </div>
+
+          <div class="col-md-6">
+            <img
+              src="img/clearpath-hero.png"
+              alt="Ambulance communicating with nearby vehicles and traffic signals"
+              class="img-fluid rounded"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="container py-5">
+        <h2>How It Works</h2>
+
+        <p>
+          ClearPath is designed to connect emergency vehicles, nearby drivers,
+          and traffic signals automatically.
+        </p>
+
+        <ol>
+          <li>An ambulance's siren activates its ClearPath signal.</li>
+          <li>
+            Nearby drivers receive an alert that an emergency vehicle is
+            approaching.
+          </li>
+          <li>
+            ClearPath requests priority at equipped intersections to help the
+            ambulance move through.
+          </li>
+        </ol>
+      </section>
+
+      <section id="features" class="container py-5">
+        <h2>Explore ClearPath</h2>
+
+        <p>
+          Learn about the proposed features and how they could help drivers and
+          emergency responders.
+        </p>
+
+        <div class="mb-4">
+          <label for="search-box" class="form-label"> Search features </label>
+
+          <input
+            type="search"
+            id="search-box"
+            class="form-control mb-3"
+            placeholder="Search features..."
+          />
+
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-success">All</button>
+
+            <button type="button" class="btn btn-outline-success">
+              Drivers
+            </button>
+
+            <button type="button" class="btn btn-outline-success">
+              Responders
+            </button>
+
+            <button type="button" class="btn btn-outline-success">
+              City planners
+            </button>
+          </div>
+        </div>
+
+        <div id="cards" class="row g-4 mt-3">
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <i class="bi bi-bell-fill feature-icon"></i>
+                <h3 class="h5">Emergency vehicle alerts</h3>
+
+                <p>
+                  Could notify nearby drivers when an emergency vehicle is
+                  approaching.
+                </p>
+
+                <p class="text-success">Drivers - Responders</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <i class="bi bi-stoplights-fill feature-icon"></i>
+                <h3 class="h5">Automatic signaling</h3>
+
+                <p>
+                  Could automatically send an emergency signal when an
+                  ambulance's siren is activated.
+                </p>
+
+                <p class="text-success">Responders - City planners</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <i class="bi bi-sign-intersection-fill feature-icon"></i>
+                <h3 class="h5">Intersection coordination</h3>
+
+                <p>
+                  Could request traffic-signal priority to help emergency
+                  vehicles move through intersections.
+                </p>
+
+                <p class="text-success">Responders - City planners</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="feedback" class="container py-5">
+        <div class="row align-items-center g-4">
+          <div class="col-md-6">
+            <h2 class="fw-bold">Questions and feedback</h2>
+
+            <p>
+              ClearPath is a student project exploring how technology could
+              support faster, safer emergency response. Your questions and
+              suggestions help guide our ideas and show what matters to the
+              community.
+            </p>
+          </div>
+
+          <div class="col-md-6">
+            <form id="feedback-form" class="card card-body p-4">
+              <h3 class="h5 mb-3">Share your feedback</h3>
+
+              <label for="topic" class="form-label">Topic</label>
+
+              <select id="topic" name="topic" class="form-select mb-3">
+                <option value="">Select a topic...</option>
+                <option value="alerts">Emergency vehicle alerts</option>
+                <option value="signaling">Automatic signaling</option>
+                <option value="intersections">Intersection coordination</option>
+                <option value="general">General question</option>
+              </select>
+
+              <label for="message" class="form-label">
+                Your question or suggestion
+              </label>
+
+              <textarea
+                id="message"
+                name="message"
+                class="form-control mb-3"
+                rows="4"
+                placeholder="Tell us what's on your mind..."
+              ></textarea>
+
+              <button type="submit" class="btn btn-success w-100">
+                Submit feedback
+              </button>
+            </form>
+
+            <p id="feedback-status"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer text-center py-4">
+  <p class="mb-3">
+    Making way for what matters most. Together.
+  </p>
+
+  <p class="mb-0">
+    <a
+      href="https://github.com/CamdynMardis"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-white me-3"
+    >
+      GitHub profile
+    </a>
+
+    <a
+      href="https://github.com/CamdynMardis/clearpath-system-website"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-white"
+    >
+      Source code
+    </a>
+  </p>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
