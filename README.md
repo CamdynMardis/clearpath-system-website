@@ -22,7 +22,7 @@ I plan to continue developing this project into an informational website for Cle
 
 ## Technology Stack
 
-HTML5, CSS3, JavaScript, jQuery, Bootstrap 5, Bootstrap Icons, Normalize.css, Google Fonts (Inter), GitHub, and GitHub Pages.
+HTML5, CSS3, JavaScript, jQuery, Bootstrap 5, Bootstrap Icons, Normalize.css, Google Fonts (Inter), Git, GitHub, and GitHub Pages.
 
 I used Visual Studio Code to write and edit the project files.
 
