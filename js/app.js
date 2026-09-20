@@ -14,6 +14,6 @@ const signinStatus = document.getElementById("signin-status");
 if (signinForm) {
   signinForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    signinStatus.textContent = "Sign-in demonstration submitted.";
+    signinStatus.textContent = "Sign-in submitted.";
   });
 }
