@@ -1,3 +1,38 @@
+let appState = {
+  app: {
+    name: "ClearPath",
+    version: "0.2",
+  },
+  user: null,
+  data: {
+    features: [],
+    feedback: [],
+  },
+  session: {
+    startedAt: new Date().toISOString(),
+  },
+};
+
+try {
+  const savedState = sessionStorage.getItem("appState");
+
+  if (savedState) {
+    appState = JSON.parse(savedState);
+  } else {
+    appState.user = JSON.parse(sessionStorage.getItem("currentUser"));
+
+    appState.data.feedback = JSON.parse(
+      sessionStorage.getItem("feedbackRecords") || "[]",
+    );
+  }
+} catch (error) {
+  console.error("[SESSION] Could not restore application state:", error);
+}
+
+function saveAppState() {
+  sessionStorage.setItem("appState", JSON.stringify(appState));
+  console.log("[SESSION] Application state saved");
+}
 const feedbackForm = document.getElementById("feedback-form");
 const feedbackStatus = document.getElementById("feedback-status");
 const feedbackList = document.getElementById("feedback-list");
@@ -140,7 +175,8 @@ if (feedbackForm && feedbackStatus && feedbackList) {
 
       sessionStorage.setItem("feedbackRecords", JSON.stringify(updatedRecords));
 
-      feedbackRecords = updatedRecords;
+      appState.data.feedback = feedbackRecords;
+      saveAppState();
       renderFeedback();
       feedbackForm.reset();
       delete feedbackForm.dataset.editingId;
@@ -209,6 +245,8 @@ if (signinForm) {
 
     try {
       sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+      appState.user = currentUser;
+      saveAppState();
       signinStatus.textContent = `Signed in as ${currentUser.username}.`;
       updateSigninInterface();
 
@@ -253,7 +291,8 @@ function updateSigninInterface() {
 if (signoutButton) {
   signoutButton.addEventListener("click", function () {
     try {
-      sessionStorage.removeItem("currentUser");
+      appState.user = null;
+      saveAppState();
       signinForm.reset();
       updateSigninInterface();
       signinStatus.textContent = "You have signed out.";
@@ -316,6 +355,8 @@ async function loadFeatures() {
     }
 
     const features = await response.json();
+    appState.data.features = features;
+    saveAppState();
 
     renderFeatures(features);
 
@@ -356,6 +397,9 @@ if (adminContent && adminStatus) {
       const adminRecords = JSON.parse(
         sessionStorage.getItem("feedbackRecords") || "[]",
       );
+      appState.user = currentUser;
+      appState.data.feedback = adminRecords;
+      saveAppState();
 
       document.getElementById("admin-record-count").textContent =
         `${adminRecords.length} feedback record(s)`;
@@ -413,12 +457,29 @@ if (adminContent && adminStatus) {
               JSON.stringify(remainingRecords),
             );
 
+            appState.data.feedback = remainingRecords;
+            saveAppState();
             card.remove();
 
             document.getElementById("admin-record-count").textContent =
               `${remainingRecords.length} feedback record(s)`;
 
             adminStatus.textContent = "Feedback deleted.";
+            document.getElementById("app-state-output").textContent =
+              JSON.stringify(appState, null, 2);
+
+            const updatedStorage = {
+              currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
+              feedbackRecords: remainingRecords,
+              appState: JSON.parse(sessionStorage.getItem("appState")),
+            };
+
+            document.getElementById("admin-storage").textContent =
+              JSON.stringify(updatedStorage, null, 2);
+
+            systemInfo.feedbackCount = remainingRecords.length;
+            systemInfo.currentTime = new Date().toLocaleString();
+            systemOutput.textContent = JSON.stringify(systemInfo, null, 2);
             console.log("[DELETE] Feedback removed:", record.id);
           } catch (error) {
             adminStatus.textContent =
@@ -430,6 +491,42 @@ if (adminContent && adminStatus) {
         card.append(topic, author, message, deleteButton);
         adminFeedbackList.append(card);
       });
+      document.getElementById("app-state-output").textContent = JSON.stringify(
+        appState,
+        null,
+        2,
+      );
+
+      console.log("[STATE] Current application state:", appState);
+      console.log(JSON.stringify(appState, null, 2));
+      const storageSnapshot = {
+        currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
+        feedbackRecords: JSON.parse(
+          sessionStorage.getItem("feedbackRecords") || "[]",
+        ),
+        appState: JSON.parse(sessionStorage.getItem("appState")),
+      };
+
+      document.getElementById("admin-storage").textContent = JSON.stringify(
+        storageSnapshot,
+        null,
+        2,
+      );
+      const systemInfo = {
+        currentTime: new Date().toLocaleString(),
+        currentPage: window.location.pathname,
+        browser: navigator.userAgent,
+        sessionStarted: appState.session.startedAt,
+        featureCount: appState.data.features.length,
+        feedbackCount: appState.data.feedback.length,
+      };
+
+      const systemOutput = document.createElement("pre");
+      systemOutput.style.whiteSpace = "pre-wrap";
+      systemOutput.style.overflowWrap = "anywhere";
+      systemOutput.textContent = JSON.stringify(systemInfo, null, 2);
+
+      document.getElementById("admin-system").replaceChildren(systemOutput);
       console.log("[AUTHZ] Admin access allowed");
     } else {
       adminContent.hidden = true;
