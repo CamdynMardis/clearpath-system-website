@@ -113,3 +113,70 @@ if (signoutButton) {
 }
 
 updateSigninInterface();
+
+const cardsContainer = document.getElementById("cards");
+const featuresStatus = document.getElementById("features-status");
+
+function renderFeatures(features) {
+  cardsContainer.replaceChildren();
+
+  features.forEach(function (feature) {
+    const column = document.createElement("div");
+    column.className = "col-md-4";
+
+    const card = document.createElement("div");
+    card.className = "card h-100";
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+
+    const icon = document.createElement("i");
+    icon.className = `bi ${feature.icon} feature-icon`;
+    icon.setAttribute("aria-hidden", "true");
+
+    const title = document.createElement("h3");
+    title.className = "h5";
+    title.textContent = feature.title;
+
+    const description = document.createElement("p");
+    description.textContent = feature.description;
+
+    const audiences = document.createElement("p");
+    audiences.className = "text-success";
+    audiences.textContent = feature.audiences.join(" - ");
+
+    body.append(icon, title, description, audiences);
+    card.append(body);
+    column.append(card);
+    cardsContainer.append(column);
+  });
+}
+
+async function loadFeatures() {
+  featuresStatus.textContent = "Loading features...";
+
+  try {
+    const response = await fetch("data/features.json");
+
+    if (!response.ok) {
+      throw new Error(`Could not load features: ${response.status}`);
+    }
+
+    const features = await response.json();
+
+    renderFeatures(features);
+
+    featuresStatus.textContent =
+      features.length === 0 ? "No features found." : "";
+
+    console.log(`[DATA] Loaded ${features.length} features`);
+  } catch (error) {
+    featuresStatus.textContent = "Could not load features. Please try again.";
+
+    console.error("[DATA] Feature loading failed:", error);
+  }
+}
+
+if (cardsContainer && featuresStatus) {
+  loadFeatures();
+}

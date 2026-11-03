@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Emergency vehicle alerts",
+    "description": "Could notify nearby drivers when an emergency vehicle is approaching.",
+    "icon": "bi-bell-fill",
+    "audiences": ["Drivers", "Responders"]
+  },
+  {
+    "id": 2,
+    "title": "Automatic signaling",
+    "description": "Could automatically send an emergency signal when an ambulance's siren is activated.",
+    "icon": "bi-stoplights-fill",
+    "audiences": ["Responders", "City planners"]
+  },
+  {
+    "id": 3,
+    "title": "Intersection coordination",
+    "description": "Could request traffic-signal priority to help emergency vehicles move through intersections.",
+    "icon": "bi-sign-intersection-fill",
+    "audiences": ["Responders", "City planners"]
+  }
+]
