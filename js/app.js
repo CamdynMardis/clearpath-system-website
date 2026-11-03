@@ -353,6 +353,83 @@ if (adminContent && adminStatus) {
         `Username: ${currentUser.username} | ` +
         `Role: ${currentUser.role} | Authenticated: true`;
 
+      const adminRecords = JSON.parse(
+        sessionStorage.getItem("feedbackRecords") || "[]",
+      );
+
+      document.getElementById("admin-record-count").textContent =
+        `${adminRecords.length} feedback record(s)`;
+
+      const adminFeedbackList = document.getElementById("admin-feedback-list");
+      adminFeedbackList.replaceChildren();
+
+      adminRecords.forEach(function (record) {
+        const card = document.createElement("div");
+        card.className = "card card-body mb-3";
+
+        const topic = document.createElement("h3");
+        topic.className = "h6";
+        topic.textContent = record.topicLabel;
+
+        const author = document.createElement("p");
+        author.textContent = `Submitted by: ${record.username}`;
+
+        const message = document.createElement("p");
+        message.className = "mb-0";
+        message.textContent = record.message;
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "btn btn-outline-danger btn-sm mt-3";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", function () {
+          try {
+            const activeUser = JSON.parse(
+              sessionStorage.getItem("currentUser"),
+            );
+
+            if (
+              !activeUser ||
+              activeUser.authenticated !== true ||
+              activeUser.role !== "admin"
+            ) {
+              adminContent.hidden = true;
+              adminStatus.textContent =
+                "Only an administrator can delete feedback.";
+              return;
+            }
+
+            const savedRecords = JSON.parse(
+              sessionStorage.getItem("feedbackRecords") || "[]",
+            );
+
+            const remainingRecords = savedRecords.filter(function (item) {
+              return item.id !== record.id;
+            });
+
+            sessionStorage.setItem(
+              "feedbackRecords",
+              JSON.stringify(remainingRecords),
+            );
+
+            card.remove();
+
+            document.getElementById("admin-record-count").textContent =
+              `${remainingRecords.length} feedback record(s)`;
+
+            adminStatus.textContent = "Feedback deleted.";
+            console.log("[DELETE] Feedback removed:", record.id);
+          } catch (error) {
+            adminStatus.textContent =
+              "Unable to delete feedback. Please try again.";
+            console.error("[DELETE] Could not delete feedback:", error);
+          }
+        });
+
+        card.append(topic, author, message, deleteButton);
+        adminFeedbackList.append(card);
+      });
       console.log("[AUTHZ] Admin access allowed");
     } else {
       adminContent.hidden = true;
