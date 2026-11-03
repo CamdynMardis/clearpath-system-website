@@ -1,10 +1,107 @@
 const feedbackForm = document.getElementById("feedback-form");
 const feedbackStatus = document.getElementById("feedback-status");
+const feedbackList = document.getElementById("feedback-list");
 
-if (feedbackForm) {
+let feedbackRecords = [];
+
+function renderFeedback() {
+  feedbackList.replaceChildren();
+
+  const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
+  if (!currentUser || !currentUser.authenticated) {
+    feedbackList.textContent = "Sign in to view and submit your feedback.";
+    return;
+  }
+
+  const ownFeedback = feedbackRecords.filter(function (record) {
+    return record.username === currentUser.username;
+  });
+
+  if (ownFeedback.length === 0) {
+    feedbackList.textContent = "You have not submitted feedback yet.";
+    return;
+  }
+
+  ownFeedback.forEach(function (record) {
+    const card = document.createElement("div");
+    card.className = "card card-body mb-3";
+
+    const topic = document.createElement("h4");
+    topic.className = "h6";
+    topic.textContent = record.topicLabel;
+
+    const message = document.createElement("p");
+    message.className = "mb-0";
+    message.textContent = record.message;
+
+    card.append(topic, message);
+    feedbackList.append(card);
+  });
+}
+
+if (feedbackForm && feedbackStatus && feedbackList) {
+  try {
+    const savedFeedback = sessionStorage.getItem("feedbackRecords");
+
+    if (savedFeedback) {
+      feedbackRecords = JSON.parse(savedFeedback);
+
+      if (!Array.isArray(feedbackRecords)) {
+        throw new Error("Saved feedback must be an array.");
+      }
+    }
+
+    renderFeedback();
+  } catch (error) {
+    feedbackStatus.textContent = "Could not load your saved feedback.";
+    console.error("[DATA] Could not load feedback:", error);
+  }
+
   feedbackForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    feedbackStatus.textContent = "Thank you for sharing your feedback.";
+
+    try {
+      const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
+      if (!currentUser || !currentUser.authenticated) {
+        feedbackStatus.textContent =
+          "Please sign in before submitting feedback.";
+        return;
+      }
+
+      const topicInput = document.getElementById("topic");
+      const messageInput = document.getElementById("message");
+      const message = messageInput.value.trim();
+
+      if (!topicInput.value || !message) {
+        feedbackStatus.textContent = "Choose a topic and enter your feedback.";
+        return;
+      }
+
+      const newRecord = {
+        id: crypto.randomUUID(),
+        username: currentUser.username,
+        topic: topicInput.value,
+        topicLabel: topicInput.options[topicInput.selectedIndex].text,
+        message: message,
+        createdAt: new Date().toISOString(),
+      };
+
+      const updatedRecords = [...feedbackRecords, newRecord];
+
+      sessionStorage.setItem("feedbackRecords", JSON.stringify(updatedRecords));
+
+      feedbackRecords = updatedRecords;
+      renderFeedback();
+      feedbackForm.reset();
+
+      feedbackStatus.textContent = "Thank you. Your feedback has been saved.";
+      console.log("[CREATE] Feedback added:", newRecord.id);
+    } catch (error) {
+      feedbackStatus.textContent = "Unable to save feedback. Please try again.";
+      console.error("[CREATE] Could not save feedback:", error);
+    }
   });
 }
 
