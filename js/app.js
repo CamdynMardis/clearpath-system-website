@@ -235,6 +235,11 @@ function updateSigninInterface() {
 
     signinForm.hidden = signedIn;
     signoutButton.hidden = !signedIn;
+    const adminLink = document.getElementById("admin-link");
+
+    if (adminLink) {
+      adminLink.hidden = !(signedIn && currentUser.role === "admin");
+    }
 
     if (signedIn) {
       signinStatus.textContent = `Signed in as ${currentUser.username}.`;
@@ -327,4 +332,39 @@ async function loadFeatures() {
 
 if (cardsContainer && featuresStatus) {
   loadFeatures();
+}
+
+const adminContent = document.getElementById("admin-content");
+const adminStatus = document.getElementById("admin-status");
+
+if (adminContent && adminStatus) {
+  try {
+    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
+    if (
+      currentUser &&
+      currentUser.authenticated === true &&
+      currentUser.role === "admin"
+    ) {
+      adminContent.hidden = false;
+      adminStatus.textContent = "Welcome to the ClearPath admin dashboard.";
+
+      document.getElementById("admin-user").textContent =
+        `Username: ${currentUser.username} | ` +
+        `Role: ${currentUser.role} | Authenticated: true`;
+
+      console.log("[AUTHZ] Admin access allowed");
+    } else {
+      adminContent.hidden = true;
+      adminStatus.textContent =
+        "You are not authorized to access this dashboard. Sign in as an administrator.";
+
+      console.log("[AUTHZ] Admin access denied");
+    }
+  } catch (error) {
+    adminContent.hidden = true;
+    adminStatus.textContent =
+      "Unable to load your session. Please sign in again.";
+    console.error("[SESSION] Admin session could not be loaded:", error);
+  }
 }

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearPath | Admin</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+
+  <body>
+    <header class="container pt-4">
+      <a href="../index.html" class="text-decoration-none fw-bold">
+        ClearPath — Home
+      </a>
+      <a href="signin.html" class="ms-3">Account</a>
+    </header>
+
+    <main class="container py-5">
+      <h1>Admin dashboard</h1>
+      <p id="admin-status" role="status"></p>
+
+      <div id="admin-content" hidden>
+        <section class="card card-body mb-4">
+          <h2 class="h4">Current user and session</h2>
+          <div id="admin-user"></div>
+        </section>
+
+        <section class="card card-body mb-4">
+          <h2 class="h4">Feedback records</h2>
+          <p id="admin-record-count"></p>
+          <div id="admin-feedback-list"></div>
+        </section>
+
+        <section class="card card-body mb-4">
+          <h2 class="h4">Session storage</h2>
+          <pre id="admin-storage" class="text-wrap"></pre>
+        </section>
+
+        <section class="card card-body mb-4">
+          <h2 class="h4">Application state JSON</h2>
+          <pre id="app-state-output" class="text-wrap"></pre>
+        </section>
+
+        <section class="card card-body">
+          <h2 class="h4">System information</h2>
+          <div id="admin-system"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer text-center py-4">
+      <p class="mb-0">Making way for what matters most. Together.</p>
+    </footer>
+
+    <script src="../js/app.js"></script>
+  </body>
+</html>
