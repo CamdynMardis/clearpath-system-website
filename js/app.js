@@ -35,7 +35,24 @@ function renderFeedback() {
     message.className = "mb-0";
     message.textContent = record.message;
 
-    card.append(topic, message);
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "btn btn-outline-success btn-sm mt-3";
+    editButton.textContent = "Edit";
+
+    editButton.addEventListener("click", function () {
+      document.getElementById("topic").value = record.topic;
+      document.getElementById("message").value = record.message;
+      feedbackForm.dataset.editingId = record.id;
+
+      feedbackForm.querySelector('button[type="submit"]').textContent =
+        "Save changes";
+
+      feedbackStatus.textContent = "Editing your feedback.";
+      document.getElementById("message").focus();
+    });
+
+    card.append(topic, message, editButton);
     feedbackList.append(card);
   });
 }
@@ -88,13 +105,47 @@ if (feedbackForm && feedbackStatus && feedbackList) {
         createdAt: new Date().toISOString(),
       };
 
-      const updatedRecords = [...feedbackRecords, newRecord];
+      const editingId = feedbackForm.dataset.editingId;
+      let updatedRecords;
+
+      if (editingId) {
+        const existingRecord = feedbackRecords.find(function (record) {
+          return record.id === editingId;
+        });
+
+        if (
+          !existingRecord ||
+          existingRecord.username !== currentUser.username
+        ) {
+          feedbackStatus.textContent = "You can only edit your own feedback.";
+          return;
+        }
+
+        updatedRecords = feedbackRecords.map(function (record) {
+          if (record.id === editingId) {
+            return {
+              ...record,
+              topic: newRecord.topic,
+              topicLabel: newRecord.topicLabel,
+              message: newRecord.message,
+              updatedAt: new Date().toISOString(),
+            };
+          }
+
+          return record;
+        });
+      } else {
+        updatedRecords = [...feedbackRecords, newRecord];
+      }
 
       sessionStorage.setItem("feedbackRecords", JSON.stringify(updatedRecords));
 
       feedbackRecords = updatedRecords;
       renderFeedback();
       feedbackForm.reset();
+      delete feedbackForm.dataset.editingId;
+      feedbackForm.querySelector('button[type="submit"]').textContent =
+        "Submit feedback";
 
       feedbackStatus.textContent = "Thank you. Your feedback has been saved.";
       console.log("[CREATE] Feedback added:", newRecord.id);
