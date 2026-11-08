@@ -175,6 +175,8 @@ if (feedbackForm && feedbackStatus && feedbackList) {
 
       sessionStorage.setItem("feedbackRecords", JSON.stringify(updatedRecords));
 
+      feedbackRecords = updatedRecords;
+
       appState.data.feedback = feedbackRecords;
       saveAppState();
       renderFeedback();
@@ -183,8 +185,13 @@ if (feedbackForm && feedbackStatus && feedbackList) {
       feedbackForm.querySelector('button[type="submit"]').textContent =
         "Submit feedback";
 
-      feedbackStatus.textContent = "Thank you. Your feedback has been saved.";
-      console.log("[CREATE] Feedback added:", newRecord.id);
+      if (editingId) {
+        feedbackStatus.textContent = "Your feedback has been updated.";
+        console.log("[UPDATE] Feedback updated:", editingId);
+      } else {
+        feedbackStatus.textContent = "Thank you. Your feedback has been saved.";
+        console.log("[CREATE] Feedback added:", newRecord.id);
+      }
     } catch (error) {
       feedbackStatus.textContent = "Unable to save feedback. Please try again.";
       console.error("[CREATE] Could not save feedback:", error);
@@ -291,6 +298,7 @@ function updateSigninInterface() {
 if (signoutButton) {
   signoutButton.addEventListener("click", function () {
     try {
+      sessionStorage.removeItem("currentUser");
       appState.user = null;
       saveAppState();
       signinForm.reset();
