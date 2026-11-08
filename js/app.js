@@ -105,6 +105,36 @@ if (feedbackForm && feedbackStatus && feedbackList) {
     }
 
     renderFeedback();
+    const editingId = sessionStorage.getItem("feedbackToEdit");
+
+    if (editingId) {
+      const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
+      const selectedRecord = feedbackRecords.find(function (record) {
+        return record.id === editingId;
+      });
+
+      if (
+        currentUser &&
+        currentUser.authenticated === true &&
+        currentUser.role === "admin" &&
+        selectedRecord
+      ) {
+        document.getElementById("topic").value = selectedRecord.topic;
+        document.getElementById("message").value = selectedRecord.message;
+        feedbackForm.dataset.editingId = selectedRecord.id;
+
+        feedbackForm.querySelector('button[type="submit"]').textContent =
+          "Save changes";
+
+        feedbackStatus.textContent = `Editing feedback submitted by ${selectedRecord.username}.`;
+      } else {
+        feedbackStatus.textContent =
+          "Unable to open that feedback for editing.";
+      }
+
+      sessionStorage.removeItem("feedbackToEdit");
+    }
   } catch (error) {
     feedbackStatus.textContent = "Could not load your saved feedback.";
     console.error("[DATA] Could not load feedback:", error);
@@ -150,9 +180,11 @@ if (feedbackForm && feedbackStatus && feedbackList) {
 
         if (
           !existingRecord ||
-          existingRecord.username !== currentUser.username
+          (existingRecord.username !== currentUser.username &&
+            currentUser.role !== "admin")
         ) {
-          feedbackStatus.textContent = "You can only edit your own feedback.";
+          feedbackStatus.textContent =
+            "You are not authorized to edit this feedback.";
           return;
         }
 
@@ -356,6 +388,14 @@ async function loadFeatures() {
   featuresStatus.textContent = "Loading features...";
 
   try {
+    if (appState.data.features.length > 0) {
+      renderFeatures(appState.data.features);
+      featuresStatus.textContent = "";
+      console.log(
+        `[DATA] Restored ${appState.data.features.length} features from session`,
+      );
+      return;
+    }
     const response = await fetch("data/features.json");
 
     if (!response.ok) {
@@ -496,7 +536,37 @@ if (adminContent && adminStatus) {
           }
         });
 
-        card.append(topic, author, message, deleteButton);
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.className = "btn btn-outline-success btn-sm mt-3";
+        editButton.textContent = "Edit";
+
+        editButton.addEventListener("click", function () {
+          try {
+            const activeUser = JSON.parse(
+              sessionStorage.getItem("currentUser"),
+            );
+
+            if (
+              !activeUser ||
+              activeUser.authenticated !== true ||
+              activeUser.role !== "admin"
+            ) {
+              adminContent.hidden = true;
+              adminStatus.textContent =
+                "Only an administrator can manage this feedback.";
+              return;
+            }
+
+            sessionStorage.setItem("feedbackToEdit", record.id);
+            window.location.href = "../index.html#feedback";
+          } catch (error) {
+            adminStatus.textContent = "Unable to open feedback for editing.";
+            console.error("[UPDATE] Could not open feedback:", error);
+          }
+        });
+
+        card.append(topic, author, message, editButton, deleteButton);
         adminFeedbackList.append(card);
       });
       document.getElementById("app-state-output").textContent = JSON.stringify(
