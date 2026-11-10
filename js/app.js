@@ -628,3 +628,17 @@ if (adminContent && adminStatus) {
     console.error("[SESSION] Admin session could not be loaded:", error);
   }
 }
+const accountLink = document.querySelector('a[href="pages/signin.html"]');
+
+if (accountLink) {
+  try {
+    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
+    accountLink.textContent =
+      currentUser && currentUser.authenticated === true
+        ? "Profile"
+        : "Sign In";
+  } catch (error) {
+    accountLink.textContent = "Sign In";
+  }
+}
