@@ -26,6 +26,14 @@ try {
     );
   }
 } catch (error) {
+  const sessionError = document.createElement("p");
+  sessionError.className = "alert alert-danger";
+  sessionError.setAttribute("role", "alert");
+  sessionError.textContent =
+    "Could not restore your saved session. Please close this tab and reopen the website.";
+
+  document.body.prepend(sessionError);
+
   console.error("[SESSION] Could not restore application state:", error);
 }
 

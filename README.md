@@ -2,7 +2,7 @@
 
 > Making way for what matters most. Together.
 
-Author: Camdyn Mardis | Project: dev-delta | Version: 0.2 | Date: 2026-11-07
+Author: Camdyn Mardis | Project: dev-delta | Version: 0.2 | Date: 2026-11-09
 
 ## Problem and narrative
 
@@ -136,14 +136,23 @@ The following behavior was manually checked on the local development server:
 - Admin deletion removes feedback and updates the record count, state JSON, storage display, and system count without a refresh.
 - The console displays test credentials and meaningful data, authentication, and CRUD messages.
 
+### GitHub Pages testing — 2026-11-09
+
+- Starting feature JSON loaded in a fresh session.
+- Regular-user sign-in, feedback creation, editing, and refresh persistence passed.
+- Incorrect credentials were rejected.
+- Regular users and signed-out visitors were denied admin access.
+- Admin sign-in, editing another user's feedback, and deletion passed.
+- Deletion updated the dashboard counts, session storage, and application state.
+- All three pages passed HTML validation with no errors or warnings.
+- Keyboard navigation and keyboard sign-in were checked.
+- Home, sign-in, and admin layouts were checked at a 375px viewport width.
+- Feedback without a topic was rejected without creating a record.
+- Signed-out visitors were prevented from submitting feedback.
+
 ### Checks still to complete
 
-- Test the latest version on deployed GitHub Pages.
-- Test starting with a fresh browser session.
-- Check keyboard navigation and smaller-screen layouts.
-- Check text readability and HTML validation.
-- Review error handling and the browser console.
-- Complete a final comparison against the Delta requirements.
+Finish Delta testing notes and session error feedback
 
 ## Known issues and limitations
 
@@ -153,7 +162,7 @@ The following behavior was manually checked on the local development server:
 - Session data is temporary and is not shared between users or devices.
 - There is no server database or real account registration.
 - Separate storage entries and application state must remain synchronized.
-- Browser testing showed messages from external scripts; their source needs further review during final testing.
+- The published home page reported a missing favicon (browser-tab icon).
 
 ## Future development
 
