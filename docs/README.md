@@ -182,9 +182,9 @@ Finish Delta testing notes and session error feedback
 
 ## ECHO Deployment
 
-- GitHub repository: https://github.com/CamdynMardis/clearpath-system-website
-- GitHub Pages documentation: https://camdynmardis.github.io/clearpath-system-website/
-- GCP application: https://camdyn.barrycumbie.com
+- [GitHub repository](https://github.com/CamdynMardis/clearpath-system-website)
+- [GitHub Pages documentation](https://camdynmardis.github.io/clearpath-system-website/)
+- [GCP application](https://camdyn.barrycumbie.com)
 - Static external IP: 35.184.118.227
 - [SSH verification issue #2](https://github.com/CamdynMardis/clearpath-system-website/issues/2)
 
