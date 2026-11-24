@@ -102,11 +102,12 @@ I used Visual Studio Code to edit the project and a local development server to 
 ```text
 clearpath-system-website/
 |-- index.html
-|-- README.md
 |-- css/
 |   |-- styles.css
 |-- data/
 |   |-- features.json
+|-- docs/
+|   |-- README.md
 |-- js/
 |   |-- app.js
 |-- pages/
@@ -178,3 +179,15 @@ Finish Delta testing notes and session error feedback
 - AI assistance: Used ChatGPT/Codex for coding help, troubleshooting, and documentation.
 - Libraries and resources: Bootstrap, Bootstrap Icons, jQuery, Normalize.css, and Google Fonts.
 - Hero image: Created with Canva AI.
+
+## ECHO Deployment
+
+- GitHub repository: https://github.com/CamdynMardis/clearpath-system-website
+- GitHub Pages documentation: https://camdynmardis.github.io/clearpath-system-website/
+- GCP application: https://camdyn.barrycumbie.com
+- Static external IP: 35.184.118.227
+- [SSH verification issue #2](https://github.com/CamdynMardis/clearpath-system-website/issues/2)
+
+### Deployment status
+
+ClearPath deployment to GCP and local SSH verification are in progress.
