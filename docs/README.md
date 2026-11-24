@@ -188,6 +188,22 @@ Finish Delta testing notes and session error feedback
 - Static external IP: 35.184.118.227
 - [SSH verification issue #2](https://github.com/CamdynMardis/clearpath-system-website/issues/2)
 
-### Deployment status
+### Deployment summary
 
-ClearPath deployment to GCP and local SSH verification are in progress.
+ClearPath is deployed on my existing Google Cloud Compute Engine VM running Debian Linux and Nginx. The repository is cloned into ~/app, and the website files are copied into /var/www/html.
+
+I checked that the image, feature cards, sign-in, feedback, and session persistence work on the GCP deployment.
+
+### SSH access verification
+
+I connected from my local computer using my own SSH key. My public key and Barry Cumbie's existing key remain listed in the VM's SSH metadata.
+
+[Closed SSH verification issue #2](https://github.com/CamdynMardis/clearpath-system-website/issues/2)
+
+### Linux commands
+
+- `git clone` downloads the repository onto the VM.
+- `git pull` gets later updates from GitHub.
+- `sudo cp -a` copies the website files into the Nginx web folder.
+- `curl -I` checks the web server's response headers.
+- `whoami`, `hostname`, and `pwd` identify the connected user, VM, and current directory.
